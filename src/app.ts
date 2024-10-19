@@ -3,10 +3,12 @@ import { PATHS } from "../lib/paths"
 import { HttpStatusCodes } from "../lib/httpStatusCodes"
 import { blogsRouter } from "./features/blog/blogsRouter"
 import { db } from "./db"
+import { postsRouter } from "./features/posts/postsRouter"
 export const app = express()
 
 app.use(express.json())
 app.use(PATHS.BLOGS, blogsRouter)
+app.use(PATHS.BLOGS, postsRouter)
 
 app.get(PATHS.HOME, (req: Request, res: Response) => {
   let helloPhrase = "Hometask 02, V1"
