@@ -1,0 +1,29 @@
+{
+  "name": "hometask_02",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon --inspect dist/index.js",
+    "watch": "tsc -w",
+    "jest": "jest"
+  },
+  "dependencies": {
+    "@types/jest": "^29.5.13",
+    "@types/supertest": "^6.0.2",
+    "express": "^4.21.1",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.7",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "private": true,
+  "author": "BenjaminKuznetsov <benjaminkuznetsoff@gmail.com>",
+  "license": "MIT"
+}
