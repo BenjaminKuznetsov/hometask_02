@@ -1,5 +1,5 @@
 export enum PATHS {
     HOME = "/",
-    VIDEOS = "/api/videos",
+    BLOGS = "/api/blogs",
     CLEAR_DB = "/api/testing/all-data",
 }
