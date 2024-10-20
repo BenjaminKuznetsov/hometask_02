@@ -8,7 +8,7 @@ export const app = express()
 
 app.use(express.json())
 app.use(PATHS.BLOGS, blogsRouter)
-app.use(PATHS.BLOGS, postsRouter)
+app.use(PATHS.POSTS, postsRouter)
 
 app.get(PATHS.HOME, (req: Request, res: Response) => {
   let helloPhrase = "Hometask 02, V1"
