@@ -58,7 +58,7 @@ blogsRouter.put(
       res.sendStatus(HttpStatusCodes.NotFound)
       return
     }
-    res.status(HttpStatusCodes.NoContent).json(updatedBlog)
+    res.status(HttpStatusCodes.NoContent)
   }
 )
 
