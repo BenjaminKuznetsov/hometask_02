@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
-import { HttpStatusCodes } from "../../lib/httpStatusCodes"
-import { encodeToBase64 } from "../../lib/helpers"
+import { HttpStatusCodes } from "../lib/httpStatusCodes"
+import { encodeToBase64 } from "../lib/helpers"
 
 const ADMIN_AUTH = "admin:qwerty"
 

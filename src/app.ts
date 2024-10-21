@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express"
-import { PATHS } from "../lib/paths"
-import { HttpStatusCodes } from "../lib/httpStatusCodes"
 import { blogsRouter } from "./features/blog/blogsRouter"
-import { db, validBlogs } from "./db"
+import { validBlogs } from "./mock"
 import { postsRouter } from "./features/posts/postsRouter"
+import { db } from "./db"
+import { PATHS } from "./lib/paths"
+import { HttpStatusCodes } from "./lib/httpStatusCodes"
 export const app = express()
 
 app.use(express.json())

@@ -1,12 +1,12 @@
 import express, { Request, Response } from "express"
 import { blogsRepository } from "./blogsRepository"
 import { BlogInputModel, BlogViewModel } from "./blogModels"
-import { HttpStatusCodes } from "../../../lib/httpStatusCodes"
 import { ApiErrorType, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../../types"
 import { authMiddleware } from "../../middleware/auth"
 import { descriptionValidator, nameValidator, urlValidator } from "./blogsValidators"
 import { validationResult } from "express-validator"
-import { formatErrors } from "../../../lib/helpers"
+import { HttpStatusCodes } from "../../lib/httpStatusCodes"
+import { formatErrors } from "../../lib/helpers"
 
 export const blogsRouter = express.Router()
 
