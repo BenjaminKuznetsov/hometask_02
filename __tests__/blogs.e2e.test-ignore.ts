@@ -39,7 +39,7 @@ describe("Create, get by id", () => {
     const newBlog1 = validBlogs[0]
     const newBlog2 = validBlogs[1]
 
-    it("should create 2 blogs and fing blog by id", async () => {
+    it("should create 2 blogs and find blog by id", async () => {
       const response1 = await request(app)
         .post(PATHS.BLOGS)
         .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
@@ -59,11 +59,12 @@ describe("Create, get by id", () => {
       const createdBlog2 = response2.body
       expect(createdBlog2.id).toBe("2")
 
-      const foundBlog1 = await request(app).get(`${PATHS.BLOGS}/${createdBlog1.id}`).expect(HttpStatusCodes.OK)
-      expect(foundBlog1.body.id).toBe(createdBlog1.id)
-      expect(foundBlog1.body.name).toBe(createdBlog1.name)
-      expect(foundBlog1.body.description).toBe(createdBlog1.description)
-      expect(foundBlog1.body.websiteUrl).toBe(createdBlog1.websiteUrl)
+      const res3 = await request(app).get(`${PATHS.BLOGS}/${createdBlog1.id}`).expect(HttpStatusCodes.OK)
+      const foundBlog1 = res3.body
+      expect(foundBlog1.id).toBe(createdBlog1.id)
+      expect(foundBlog1.name).toBe(createdBlog1.name)
+      expect(foundBlog1.description).toBe(createdBlog1.description)
+      expect(foundBlog1.websiteUrl).toBe(createdBlog1.websiteUrl)
     })
 
     it("shouldn't find blog with non-existent id", async () => {

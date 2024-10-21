@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import { blogsRepository } from "./blogsRepository"
 import { BlogInputModel, BlogViewModel } from "./blogModels"
-import { ApiErrorType, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../../types"
+import {ApiErrorType, FieldErrorType, RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../types"
 import { authMiddleware } from "../../middleware/auth"
 import { descriptionValidator, nameValidator, urlValidator } from "./blogsValidators"
 import { validationResult } from "express-validator"
@@ -33,7 +33,7 @@ blogsRouter.post(
   (req: RequestWithBody<BlogInputModel>, res: Response<BlogViewModel | ApiErrorType>) => {
     const errors = validationResult(req).array({ onlyFirstError: true })
     if (errors.length > 0) {
-      res.status(HttpStatusCodes.BadRequest).json({ errorsMessages: errors.map(formatErrors) })
+      res.status(HttpStatusCodes.BadRequest).json({ errorsMessages: errors.map(formatErrors)})
     } else {
       const createdBlog = blogsRepository.createBlog(req.body)
       res.status(HttpStatusCodes.Created).json(createdBlog)
