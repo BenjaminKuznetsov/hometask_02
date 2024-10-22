@@ -4,5 +4,5 @@ module.exports = {
   transform: {
     "^.+.tsx?$": ["ts-jest", {}],
   },
-  testPathIgnorePatterns: [".*test-ignore.*"],
+  testPathIgnorePatterns: [".*test-ignore.*", "__tests__/helpers"],
 }

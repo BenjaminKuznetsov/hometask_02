@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__/helpers"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }
