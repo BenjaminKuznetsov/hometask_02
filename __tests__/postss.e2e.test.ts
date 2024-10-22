@@ -10,7 +10,11 @@ const ADMIN_AUTH = "admin:qwerty"
 describe("preparation", () => {
   beforeAll(async () => {
     await request(app).delete(PATHS.TESTING)
-    await request(app).patch(PATHS.TESTING)
+    await request(app)
+      .post(PATHS.TESTING)
+      .send({
+        collectionsToFill: ["blogs"],
+      })
   })
   it("should return all blogs", async () => {
     const response = await request(app).get(PATHS.BLOGS).expect(HttpStatusCodes.OK)
@@ -39,54 +43,54 @@ describe("Create, get by id", () => {
       .expect(HttpStatusCodes.Unauthorized)
   })
 
-  describe("create two posts and find by id", () => {
-    it("should create 2 posts and find post by id", async () => {
-      const newPost1 = validPosts[0]
-      const res = await request(app).get(`${PATHS.BLOGS}/${newPost1.blogId}`)
-      const blog1 = res.body
-      //   console.log("blog1", blog1)
-      const newPost2 = validPosts[1]
-      //   console.log("newPost1", newPost1)
+  // describe("create two posts and find by id", () => {
+  it("should create 2 posts and find post by id", async () => {
+    const newPost1 = validPosts[0]
+    const res = await request(app).get(`${PATHS.BLOGS}/${newPost1.blogId}`)
+    const blog1 = res.body
+    //   console.log("blog1", blog1)
+    const newPost2 = validPosts[1]
+    //   console.log("newPost1", newPost1)
 
-      const response1 = await request(app)
-        .post(PATHS.POSTS)
-        .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-        .send(newPost1)
-        .expect(HttpStatusCodes.Created)
-      //   console.log("response1", response1.body)
-      //   expect(response1.status).toBe(HttpStatusCodes.Created)
+    const response1 = await request(app)
+      .post(PATHS.POSTS)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .send(newPost1)
+      .expect(HttpStatusCodes.Created)
+    //   console.log("response1", response1.body)
+    //   expect(response1.status).toBe(HttpStatusCodes.Created)
 
-      const createdPost1 = response1.body
-      expect(createdPost1.id).toBe("1")
-      expect(createdPost1.title).toBe(newPost1.title)
-      expect(createdPost1.shortDescription).toBe(newPost1.shortDescription)
-      expect(createdPost1.content).toBe(newPost1.content)
-      expect(createdPost1.blogId).toBe(newPost1.blogId)
-      // @ts-ignore
-      expect(createdPost1.blogName).toBe(blog1.name)
+    const createdPost1 = response1.body
+    expect(createdPost1.id).toBe("1")
+    expect(createdPost1.title).toBe(newPost1.title)
+    expect(createdPost1.shortDescription).toBe(newPost1.shortDescription)
+    expect(createdPost1.content).toBe(newPost1.content)
+    expect(createdPost1.blogId).toBe(newPost1.blogId)
+    // @ts-ignore
+    expect(createdPost1.blogName).toBe(blog1.name)
 
-      const response2 = await request(app)
-        .post(PATHS.POSTS)
-        .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-        .send(newPost2)
-        .expect(HttpStatusCodes.Created)
-      const createdPost2 = response2.body
-      expect(createdPost2.id).toBe("2")
+    const response2 = await request(app)
+      .post(PATHS.POSTS)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .send(newPost2)
+      .expect(HttpStatusCodes.Created)
+    const createdPost2 = response2.body
+    expect(createdPost2.id).toBe("2")
 
-      const res3 = await request(app).get(`${PATHS.POSTS}/${createdPost1.id}`).expect(HttpStatusCodes.OK)
-      const foundPost = res3.body
-      expect(foundPost.id).toBe(createdPost1.id)
-      expect(foundPost.title).toBe(createdPost1.title)
-      expect(foundPost.shortDescription).toBe(createdPost1.shortDescription)
-      expect(foundPost.content).toBe(createdPost1.content)
-      expect(foundPost.blogId).toBe(createdPost1.blogId)
-      expect(foundPost.blogName).toBe(createdPost1.blogName)
-    })
-
-    it("shouldn't find post with non-existent id", async () => {
-      await request(app).get(`${PATHS.POSTS}/100500`).expect(HttpStatusCodes.NotFound)
-    })
+    const res3 = await request(app).get(`${PATHS.POSTS}/${createdPost1.id}`).expect(HttpStatusCodes.OK)
+    const foundPost = res3.body
+    expect(foundPost.id).toBe(createdPost1.id)
+    expect(foundPost.title).toBe(createdPost1.title)
+    expect(foundPost.shortDescription).toBe(createdPost1.shortDescription)
+    expect(foundPost.content).toBe(createdPost1.content)
+    expect(foundPost.blogId).toBe(createdPost1.blogId)
+    expect(foundPost.blogName).toBe(createdPost1.blogName)
   })
+
+  it("shouldn't find post with non-existent id", async () => {
+    await request(app).get(`${PATHS.POSTS}/100500`).expect(HttpStatusCodes.NotFound)
+  })
+  // })
 
   it("shouldn't create post with incorrect input data", async () => {
     for (const el of invalidPosts) {
@@ -109,78 +113,88 @@ describe("Create, get by id", () => {
   })
 })
 
-// describe("Update and delete", () => {
-//   beforeAll(async () => {
-//     await request(app).delete(PATHS.TESTING)
-//     await request(app).patch(PATHS.TESTING)
-//   })
+describe.skip("Update and delete", () => {
+  beforeAll(async () => {
+    //   await request(app).delete(`${PATHS.TESTING}?collectionsToDelete=posts`)
+    //   await request(app)
+    //     .post(PATHS.TESTING)
+    //     .send({ collectionsToFill: ["posts"] })
+    // })
+    await request(app).delete(PATHS.TESTING)
+    await request(app).post(PATHS.TESTING)
+  })
 
-//   it("should return all blogs", async () => {
-//     const response = await request(app).get(PATHS.BLOGS).expect(HttpStatusCodes.OK)
-//     const returnedBlogs = response.body
-//     expect(returnedBlogs).toHaveLength(validBlogs.length)
-//   })
+  it("should return all posts", async () => {
+    const response = await request(app).get(PATHS.POSTS).expect(HttpStatusCodes.OK)
+    const returnedPosts = response.body
+    // console.log("response.body", response.body)
+    expect(returnedPosts).toHaveLength(validPosts.length)
+  })
 
-//   it("shouldn't update blog, because user is not authorized", async () => {
-//     const updatedBlog = validBlogs[0]
-//     await request(app).put(`${PATHS.BLOGS}/1`).send(updatedBlog).expect(HttpStatusCodes.Unauthorized)
-//   })
+  it("shouldn't update post, because user is not authorized", async () => {
+    const updatedPost = validPosts[0]
+    await request(app).put(`${PATHS.POSTS}/1`).send(updatedPost).expect(HttpStatusCodes.Unauthorized)
+  })
 
-//   it("shouldn't update blog with incorrect input data", async () => {
-//     for (const el of invalidBlogs) {
-//       const response = await request(app)
-//         .put(`${PATHS.BLOGS}/5`)
-//         .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-//         .send(el)
-//         .expect(HttpStatusCodes.BadRequest)
-//       // console.log(JSON.stringify(response.body, null, 2))
-//     }
-//   })
+  it("shouldn't update post with incorrect input data", async () => {
+    for (const el of invalidPosts) {
+      const response = await request(app)
+        .put(`${PATHS.POSTS}/5`)
+        .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+        .send(el)
+        .expect(HttpStatusCodes.BadRequest)
+      // console.log(JSON.stringify(response.body, null, 2))
+    }
+  })
 
-//   it("shouldn't update blog with non-existent id", async () => {
-//     const updatedBlog = validBlogs[0]
-//     await request(app)
-//       .put(`${PATHS.BLOGS}/100500`)
-//       .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-//       .send(updatedBlog)
-//       .expect(HttpStatusCodes.NotFound)
-//   })
+  it("shouldn't update post with non-existent id", async () => {
+    const updatedPost = validPosts[0]
+    await request(app)
+      .put(`${PATHS.POSTS}/100500`)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .send(updatedPost)
+      .expect(HttpStatusCodes.NotFound)
+  })
 
-//   it("should update blog with correct data", async () => {
-//     const updatedBlog = validBlogs[0]
-//     await request(app)
-//       .put(`${PATHS.BLOGS}/1`)
-//       .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-//       .send(updatedBlog)
-//       .expect(HttpStatusCodes.NoContent)
-//   })
+  it("should update post with correct data", async () => {
+    const updatedPost = validPosts[2]
+    const res = await request(app)
+      .put(`${PATHS.POSTS}/1`)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .send(updatedPost)
+    // .expect(HttpStatusCodes.NoContent)
 
-//   it("shouldn't delete blog, because user is not authorized", async () => {
-//     await request(app).delete(`${PATHS.BLOGS}/1`).expect(HttpStatusCodes.Unauthorized)
-//   })
+    console.log("res.body", res.body)
 
-//   it("shouldn't delete blog with non-existent id", async () => {
-//     await request(app)
-//       .delete(`${PATHS.BLOGS}/100500`)
-//       .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-//       .expect(HttpStatusCodes.NotFound)
-//   })
+    expect(res.status).toBe(HttpStatusCodes.NoContent)
+  })
 
-//   it("should delete blog with correct id", async () => {
-//     await request(app)
-//       .delete(`${PATHS.BLOGS}/1`)
-//       .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
-//       .expect(HttpStatusCodes.NoContent)
-//   })
-// })
+  it("shouldn't update post with incorrect blog id", async () => {
+    const updatedPost = validPosts[2]
+    updatedPost.blogId = "100500"
+    const res = await request(app)
+      .put(`${PATHS.POSTS}/1`)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .send(updatedPost)
+      .expect(HttpStatusCodes.BadRequest)
+    // console.log(res.body)
+  })
 
-/* 
- Напиши такие тесты:
- - не должен обновить блог, если пользователь не авторизован
- - не должен обновить блог с некорректными данными (пройдись циклом по массиву invalidBlogs)
- - не должен обновить блог с несуществующим id
- - должен обновить блог с корректными данными
- - не должен удалить блог, если пользователь не авторизован
- - не должен удалить блог с несущействующим id
- - должен удалить блог с корректными id
-}) */
+  it("shouldn't delete post, because user is not authorized", async () => {
+    await request(app).delete(`${PATHS.POSTS}/1`).expect(HttpStatusCodes.Unauthorized)
+  })
+
+  it("shouldn't delete post with non-existent id", async () => {
+    await request(app)
+      .delete(`${PATHS.POSTS}/100500`)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .expect(HttpStatusCodes.NotFound)
+  })
+
+  it("should delete post with correct id", async () => {
+    await request(app)
+      .delete(`${PATHS.POSTS}/1`)
+      .set("Authorization", `Basic ${encodeToBase64(ADMIN_AUTH)}`)
+      .expect(HttpStatusCodes.NoContent)
+  })
+})

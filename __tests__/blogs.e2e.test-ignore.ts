@@ -9,7 +9,7 @@ const ADMIN_AUTH = "admin:qwerty"
 
 describe("preparation", () => {
   beforeAll(async () => {
-    await request(app).delete(PATHS.TESTING)
+    await request(app).delete(`${PATHS.TESTING}?collectionsToDelete=blogs`)
   })
   it("should return status 200 and empty array", async () => {
     await request(app).get(PATHS.BLOGS).expect(HttpStatusCodes.OK, [])
@@ -86,8 +86,10 @@ describe("Create, get by id", () => {
 
 describe("Update and delete", () => {
   beforeAll(async () => {
-    await request(app).delete(PATHS.TESTING)
-    await request(app).patch(PATHS.TESTING)
+    await request(app).delete(`${PATHS.TESTING}?collectionsToDelete=blogs`)
+    await request(app)
+      .patch(PATHS.TESTING)
+      .send({ collectionsToFill: ["blogs"] })
   })
 
   it("should return all blogs", async () => {
@@ -148,50 +150,3 @@ describe("Update and delete", () => {
       .expect(HttpStatusCodes.NoContent)
   })
 })
-
-/* 
- Напиши такие тесты:
- - не должен обновить блог, если пользователь не авторизован
- - не должен обновить блог с некорректными данными (пройдись циклом по массиву invalidBlogs)
- - не должен обновить блог с несуществующим id
- - должен обновить блог с корректными данными
- - не должен удалить блог, если пользователь не авторизован
- - не должен удалить блог с несущействующим id
- - должен удалить блог с корректными id
-}) */
-
-/* describe("First group", () => {
-  beforeAll(async () => {
-    // Выполнится перед началом всех тестов в этом блоке
-    await new Promise<void>((resolve) =>
-      setTimeout(() => {
-        console.log("waiting promise 1")
-        resolve()
-      }, 1000)
-    )
-  })
-
-  it("test in first group", () => {
-    console.log("test in first group")
-    expect(true).toBe(true)
-  })
-})
-
-describe("Second group", () => {
-  beforeAll(async () => {
-    // Выполнится перед началом всех тестов во втором блоке,
-    // после того как завершится "First group"
-    await new Promise<void>((resolve) =>
-      setTimeout(() => {
-        console.log("waiting promise 2")
-        resolve()
-      }, 1000)
-    )
-  })
-
-  it("test in second group", () => {
-    console.log("test in second group")
-    expect(true).toBe(true)
-  })
-})
-  */

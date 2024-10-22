@@ -4,9 +4,8 @@ import { postsRepository } from "./postsRepository"
 import { ApiErrorType, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../../types"
 import { authMiddleware } from "../../middleware/auth"
 import { titleValidator, shortDescriptionValidator, contentValidator, blogIdValidator } from "./postValidators"
-import { validationResult } from "express-validator"
-import { formatErrors } from "../../lib/helpers"
 import { HttpStatusCodes } from "../../lib/httpStatusCodes"
+import { handleErrorsMiddleware } from "../../middleware/handleErrors"
 
 export const postsRouter = express.Router()
 
@@ -31,14 +30,10 @@ postsRouter.post(
   shortDescriptionValidator,
   contentValidator,
   blogIdValidator,
+  handleErrorsMiddleware,
   (req: RequestWithBody<PostInputModel>, res: Response<PostViewModel | ApiErrorType>) => {
-    const errors = validationResult(req).array({ onlyFirstError: true })
-    if (errors.length > 0) {
-      res.status(HttpStatusCodes.BadRequest).json({ errorsMessages: errors.map(formatErrors) })
-    } else {
-      const createdPost = postsRepository.createPost(req.body)
-      res.status(HttpStatusCodes.Created).json(createdPost)
-    }
+    const createdPost = postsRepository.createPost(req.body)
+    res.status(HttpStatusCodes.Created).json(createdPost)
   }
 )
 
@@ -49,18 +44,14 @@ postsRouter.put(
   shortDescriptionValidator,
   contentValidator,
   blogIdValidator,
+  handleErrorsMiddleware,
   (req: RequestWithParamsAndBody<{ id: string }, PostInputModel>, res: Response<PostViewModel | ApiErrorType>) => {
-    const errors = validationResult(req).array({ onlyFirstError: true })
-    if (errors.length > 0) {
-      res.status(HttpStatusCodes.BadRequest).json({ errorsMessages: errors.map(formatErrors) })
-      return
-    }
     const updatedPost = postsRepository.updatePost(req.params.id, req.body)
     if (!updatedPost) {
       res.sendStatus(HttpStatusCodes.NotFound)
       return
     }
-    res.status(HttpStatusCodes.NoContent)
+    res.sendStatus(HttpStatusCodes.NoContent)
   }
 )
 

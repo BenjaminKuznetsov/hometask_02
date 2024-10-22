@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --inspect dist/index.js",
     "watch": "tsc -w",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "dependencies": {
     "@types/jest": "^29.5.13",

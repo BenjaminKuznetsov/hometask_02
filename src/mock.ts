@@ -1,3 +1,5 @@
+import { PostInputModel } from "./features/posts/postModels"
+
 export const validBlogs = [
   {
     name: "Tech Insights",
@@ -51,7 +53,7 @@ export const invalidBlogs = [
   },
 ]
 
-export const validPosts = [
+export const validPosts: PostInputModel[] = [
   {
     title: "The Rise of AI",
     shortDescription: "How AI is transforming the way we build software",
@@ -85,6 +87,7 @@ export const validPosts = [
     shortDescription: "An overview of the best frontend tools for 2024",
     content:
       "As the web evolves, so do the tools for frontend development. From Webpack to Vite, here’s what you need to know...",
+    blogId: "3",
   },
   {
     title: "The Rise of AI in Software Development",

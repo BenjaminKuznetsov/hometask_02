@@ -1,7 +1,7 @@
-import { db } from "../../db"
-import { BlogDBModel } from "../blog/blogModels"
-import { blogsRepository } from "../blog/blogsRepository"
-import { PostDBModel, PostInputModel, PostViewModel } from "./postModels"
+import {db} from "../../db"
+import {BlogDBModel} from "../blog/blogModels"
+import {blogsRepository} from "../blog/blogsRepository"
+import {PostDBModel, PostInputModel, PostViewModel} from "./postModels"
 
 const mapper = (post: PostDBModel): PostViewModel => {
   return {
@@ -16,8 +16,7 @@ const mapper = (post: PostDBModel): PostViewModel => {
 
 export const postsRepository = {
   getAllPosts: () => {
-    const foundPosts = db.posts.map(mapper)
-    return foundPosts
+    return db.posts.map(mapper)
   },
   getPostById: (id: string) => {
     const foundPost = db.posts.find((post) => post.id === id)

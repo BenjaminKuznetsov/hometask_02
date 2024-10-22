@@ -12,6 +12,8 @@ export type DB_Type = {
   posts: PostDBModel[]
 }
 
+export type DB_Collectons = keyof DB_Type
+
 export type FieldErrorType = {
   message: string | null
   field: string | null
