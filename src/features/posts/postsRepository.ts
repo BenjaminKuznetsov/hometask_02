@@ -1,7 +1,7 @@
-import {db} from "../../db"
 import {BlogDBModel} from "../blog/blogModels"
-import {blogsRepository} from "../blog/blogsRepository"
+import {blogsRepository} from "../blog/blogsRepository_memory"
 import {PostDBModel, PostInputModel, PostViewModel} from "./postModels"
+import {db} from "../../db/memory";
 
 const mapper = (post: PostDBModel): PostViewModel => {
   return {

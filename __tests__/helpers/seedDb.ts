@@ -1,8 +1,8 @@
-import { db } from "../../src/db"
 import { BlogDBModel } from "../../src/features/blog/blogModels"
 import { PostDBModel } from "../../src/features/posts/postModels"
 import { validBlogs, validPosts } from "../../src/mock"
 import { DB_Collectons } from "../../src/types"
+import {db} from "../../src/db/memory";
 
 export const seedDb = async (collections: DB_Collectons[] = ["blogs", "posts"]) => {
   // console.log("seed func")

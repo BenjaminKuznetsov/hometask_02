@@ -2,8 +2,8 @@ import express, { Request, Response } from "express"
 import { blogsRouter } from "./features/blog/blogsRouter"
 import { postsRouter } from "./features/posts/postsRouter"
 import { PATHS } from "./lib/paths"
-import { db } from "./db"
 import { HttpStatusCodes } from "./lib/httpStatusCodes"
+import {db} from "./db/memory";
 export const app = express()
 
 app.use(express.json())

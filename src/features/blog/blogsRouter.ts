@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express"
-import { blogsRepository } from "./blogsRepository"
+import { blogsRepository } from "./blogsRepository_memory"
 import { BlogInputModel, BlogViewModel } from "./blogModels"
 import { ApiErrorType, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../../types"
 import { authMiddleware } from "../../middleware/auth"

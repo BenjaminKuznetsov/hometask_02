@@ -1,5 +1,5 @@
-import { db } from "../../db"
 import { BlogDBModel, BlogInputModel, BlogViewModel } from "./blogModels"
+import {db} from "../../db/memory";
 
 const mapper = (blog: BlogViewModel): BlogDBModel => {
   return {
