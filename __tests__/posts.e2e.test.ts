@@ -7,8 +7,6 @@ import { encodeToBase64 } from "../src/lib/helpers"
 import { clearDb } from "./helpers/clearDb"
 import { seedDb } from "./helpers/seedDb"
 
-import {db} from "../src/db/memory";
-
 const ADMIN_AUTH = "admin:qwerty"
 
 describe("posts", () => {

@@ -1,4 +1,4 @@
-import { BlogDBModel, BlogInputModel, BlogViewModel } from "./blogModels"
+import {BlogDBModel, BlogInputModel, BlogViewModel} from "./blogModels"
 import {db} from "../../db/memory";
 
 const mapper = (blog: BlogViewModel): BlogDBModel => {
@@ -12,8 +12,7 @@ const mapper = (blog: BlogViewModel): BlogDBModel => {
 
 export const blogsRepository = {
   getAllBlogs: () => {
-    const foundBlogs = db.blogs.map(mapper)
-    return foundBlogs
+    return db.blogs.map(mapper)
   },
   getBlogById: (id: string) => {
     const foundBlog = db.blogs.find((blog) => blog.id === id)
