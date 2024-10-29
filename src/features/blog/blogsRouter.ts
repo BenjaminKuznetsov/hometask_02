@@ -23,21 +23,23 @@ blogsRouter.get("/:id", async (req: RequestWithParams<{ id: string }>, res: Resp
     }
 })
 
-blogsRouter.post("/", authMiddleware, nameValidator, descriptionValidator, urlValidator, handleErrorsMiddleware, async (req: RequestWithBody<BlogInputModel>, res: Response<BlogViewModel | ApiErrorType>) => {
-    const createdBlog = await blogsRepository.createBlog(req.body)
-    res.status(HttpStatusCodes.Created).json(createdBlog)
-})
+blogsRouter.post("/", authMiddleware, nameValidator, descriptionValidator, urlValidator, handleErrorsMiddleware,
+    async (req: RequestWithBody<BlogInputModel>, res: Response<BlogViewModel | ApiErrorType>) => {
+        const createdBlog = await blogsRepository.createBlog(req.body)
+        res.status(HttpStatusCodes.Created).json(createdBlog)
+    })
 
-blogsRouter.put("/:id", authMiddleware, nameValidator, descriptionValidator, urlValidator, handleErrorsMiddleware, async (req: RequestWithParamsAndBody<{
-    id: string
-}, BlogInputModel>, res: Response<BlogViewModel | ApiErrorType>) => {
-    const updatedBlog = await blogsRepository.updateBlog(req.params.id, req.body)
-    if (!updatedBlog) {
-        res.sendStatus(HttpStatusCodes.NotFound)
-        return
-    }
-    res.sendStatus(HttpStatusCodes.NoContent)
-})
+blogsRouter.put("/:id", authMiddleware, nameValidator, descriptionValidator, urlValidator, handleErrorsMiddleware,
+    async (req: RequestWithParamsAndBody<{
+        id: string
+    }, BlogInputModel>, res: Response<BlogViewModel | ApiErrorType>) => {
+        const updatedBlog = await blogsRepository.updateBlog(req.params.id, req.body)
+        if (!updatedBlog) {
+            res.sendStatus(HttpStatusCodes.NotFound)
+            return
+        }
+        res.sendStatus(HttpStatusCodes.NoContent)
+    })
 
 blogsRouter.delete("/:id", authMiddleware, async (req: RequestWithParams<{ id: string }>, res: Response) => {
     const deletedBlog = await blogsRepository.deleteBlog(req.params.id)
