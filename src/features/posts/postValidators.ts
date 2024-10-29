@@ -22,8 +22,8 @@ export const contentValidator = body("content")
   .isLength({ min: 3, max: 1000 })
   .withMessage("Content length should be between 3 and 1000 characters")
 
-export const blogIdValidator = body("blogId").custom((blogId) => {
-  const blog = blogsRepository.getBlogById(blogId)
+export const blogIdValidator = body("blogId").custom(async (blogId) => {
+  const blog = await blogsRepository.getBlogById(blogId)
   if (!blog) {
     throw new Error("Blog with such id not found")
   }

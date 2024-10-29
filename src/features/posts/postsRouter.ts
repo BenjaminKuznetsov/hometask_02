@@ -9,13 +9,13 @@ import { handleErrorsMiddleware } from "../../middleware/handleErrors"
 
 export const postsRouter = express.Router()
 
-postsRouter.get("/", (req: Request, res: Response<PostViewModel[]>) => {
-  const foundPosts: PostViewModel[] = postsRepository.getAllPosts()
+postsRouter.get("/", async (_req: Request, res: Response<PostViewModel[]>) => {
+  const foundPosts: PostViewModel[] = await postsRepository.getAllPosts()
   res.status(HttpStatusCodes.OK).json(foundPosts)
 })
 
-postsRouter.get("/:id", (req: RequestWithParams<{ id: string }>, res: Response<PostViewModel>) => {
-  const foundPost = postsRepository.getPostById(req.params.id)
+postsRouter.get("/:id", async (req: RequestWithParams<{ id: string }>, res: Response<PostViewModel>) => {
+  const foundPost = await postsRepository.getPostById(req.params.id)
   if (!foundPost) {
     res.sendStatus(HttpStatusCodes.NotFound)
   } else {
@@ -31,8 +31,8 @@ postsRouter.post(
   contentValidator,
   blogIdValidator,
   handleErrorsMiddleware,
-  (req: RequestWithBody<PostInputModel>, res: Response<PostViewModel | ApiErrorType>) => {
-    const createdPost = postsRepository.createPost(req.body)
+  async  (req: RequestWithBody<PostInputModel>, res: Response<PostViewModel | ApiErrorType>) => {
+    const createdPost = await postsRepository.createPost(req.body)
     res.status(HttpStatusCodes.Created).json(createdPost)
   }
 )
@@ -45,8 +45,8 @@ postsRouter.put(
   contentValidator,
   blogIdValidator,
   handleErrorsMiddleware,
-  (req: RequestWithParamsAndBody<{ id: string }, PostInputModel>, res: Response<PostViewModel | ApiErrorType>) => {
-    const updatedPost = postsRepository.updatePost(req.params.id, req.body)
+    async (req: RequestWithParamsAndBody<{ id: string }, PostInputModel>, res: Response<PostViewModel | ApiErrorType>) => {
+    const updatedPost = await postsRepository.updatePost(req.params.id, req.body)
     if (!updatedPost) {
       res.sendStatus(HttpStatusCodes.NotFound)
       return
@@ -55,8 +55,8 @@ postsRouter.put(
   }
 )
 
-postsRouter.delete("/:id", authMiddleware, (req: RequestWithParams<{ id: string }>, res: Response) => {
-  const deletedPost = postsRepository.deletePost(req.params.id)
+postsRouter.delete("/:id", authMiddleware, async (req: RequestWithParams<{ id: string }>, res: Response) => {
+  const deletedPost = await postsRepository.deletePost(req.params.id)
   if (!deletedPost) {
     res.sendStatus(HttpStatusCodes.NotFound)
     return
