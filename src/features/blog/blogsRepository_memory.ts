@@ -1,7 +1,7 @@
-import {BlogDBModel, BlogInputModel, BlogViewModel} from "./blogModels"
-import {db} from "../../db/memory"
+import { BlogInputModel, BlogViewModel } from "./blogModels"
+import { db } from "../../db/memory"
 
-const mapper = (blog: BlogDBModel): BlogViewModel => {
+const mapper = (blog: BlogViewModel): BlogViewModel => {
     return {
         id: blog.id,
         name: blog.name,
@@ -12,7 +12,7 @@ const mapper = (blog: BlogDBModel): BlogViewModel => {
 
 export const blogsRepository = {
     getAllBlogs: async (): Promise<BlogViewModel[]> => {
-        return db.blogs.map(mapper)
+        return db.blogs
     },
     getBlogById: async (id: string): Promise<BlogViewModel | null> => {
         const foundBlog = db.blogs.find((blog) => blog.id === id)
@@ -21,7 +21,7 @@ export const blogsRepository = {
     createBlog: async (input: BlogInputModel): Promise<BlogViewModel> => {
         const lastBlogId = db.blogs.at(-1)?.id
         const id: string = lastBlogId ? (Number(lastBlogId) + 1).toString() : "1"
-        const newBlog: BlogDBModel = {
+        const newBlog: BlogViewModel = {
             id: id,
             name: input.name,
             description: input.description,
@@ -33,7 +33,7 @@ export const blogsRepository = {
     updateBlog: async (id: string, input: BlogInputModel): Promise<BlogViewModel | null> => {
         const foundBlog = db.blogs.find((blog) => blog.id === id)
         if (!foundBlog) return null
-        const updatedBlog: BlogDBModel = {
+        const updatedBlog: BlogViewModel = {
             id: foundBlog.id,
             name: input.name,
             description: input.description,

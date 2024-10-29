@@ -1,51 +1,42 @@
-import {BlogDBModel, BlogInputModel, BlogViewModel} from "./blogModels"
-import {db} from "../../db/memory";
+import { BlogDBModel, BlogInputModel, BlogViewModel } from "./blogModels"
+import { blogsCollection } from "../../db/mongo"
+import { ObjectId, WithId } from "mongodb"
 
-const mapper = (blog: BlogDBModel ): BlogViewModel  => {
-  return {
-    id: blog.id,
-    name: blog.name,
-    description: blog.description,
-    websiteUrl: blog.websiteUrl,
-  }
+// TODO: move to service
+const mapper = (blog: WithId<BlogDBModel>): BlogViewModel => {
+    return {
+        id: blog._id.toString(),
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+    }
 }
 
 export const blogsRepository = {
-  getAllBlogs: async () : Promise<BlogViewModel[]> => {
-    return db.blogs.map(mapper)
-  },
-  getBlogById: async (id: string): Promise<BlogViewModel | null> => {
-    const foundBlog = db.blogs.find((blog) => blog.id === id)
-    return foundBlog ? mapper(foundBlog) : null
-  },
-  createBlog: async (input: BlogInputModel): Promise<BlogViewModel> => {
-    const lastBlogId = db.blogs.at(-1)?.id
-    const id: string = lastBlogId ? (Number(lastBlogId) + 1).toString() : "1"
-    const newBlog: BlogDBModel = {
-      id: id,
-      name: input.name,
-      description: input.description,
-      websiteUrl: input.websiteUrl,
-    }
-    db.blogs.push(newBlog)
-    return newBlog
-  },
-  updateBlog: async (id: string, input: BlogInputModel): Promise<BlogViewModel | null> => {
-    const foundBlog = db.blogs.find((blog) => blog.id === id)
-    if (!foundBlog) return null
-    const updatedBlog: BlogDBModel = {
-      id: foundBlog.id,
-      name: input.name,
-      description: input.description,
-      websiteUrl: input.websiteUrl,
-    }
-    db.blogs = db.blogs.map((blog) => (blog.id === id ? updatedBlog : blog))
-    return updatedBlog
-  },
-  deleteBlog: async (id: string): Promise<BlogViewModel | null> => {
-    const foundBlog = db.blogs.find((blog) => blog.id === id)
-    if (!foundBlog) return null
-    db.blogs = db.blogs.filter((blog) => blog.id !== id)
-    return foundBlog
-  },
+    getAllBlogs: async (): Promise<BlogViewModel[]> => {
+        const foundBlogs = await blogsCollection.find().toArray()
+        return foundBlogs.map(mapper)
+    },
+    getBlogById: async (id: string): Promise<BlogViewModel | null> => {
+        const _id = new ObjectId(id)
+        const foundBlog = await blogsCollection.findOne({ _id })
+        return foundBlog ? mapper(foundBlog) : null
+    },
+    createBlog: async (input: BlogInputModel): Promise<BlogViewModel> => {
+        const result = await blogsCollection.insertOne({ ...input })
+        return {
+            id: result.insertedId.toString(),
+            ...input,
+        }
+    },
+    updateBlog: async (id: string, input: BlogInputModel): Promise<boolean> => {
+        const _id = new ObjectId(id)
+        const result = await blogsCollection.updateOne({ _id: _id }, { $set: input })
+        return !!result.matchedCount
+    },
+    deleteBlog: async (id: string): Promise<boolean> => {
+        const _id = new ObjectId(id)
+        const result = await blogsCollection.deleteOne({ _id })
+        return !!result.deletedCount
+    },
 }

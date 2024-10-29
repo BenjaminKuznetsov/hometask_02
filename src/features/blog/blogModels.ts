@@ -1,19 +1,18 @@
 export type BlogDBModel = {
-  id: string
-  name: string
-  description: string
-  websiteUrl: string
+    name: string
+    description: string
+    websiteUrl: string
 }
 
 export type BlogViewModel = {
-  id: string
-  name: string
-  description: string
-  websiteUrl: string
+    id: string
+    name: string
+    description: string
+    websiteUrl: string
 }
 
 export type BlogInputModel = {
-  name: string
-  description: string
-  websiteUrl: string
+    name: string
+    description: string
+    websiteUrl: string
 }

@@ -1,24 +1,23 @@
 export type PostDBModel = {
-  id: string
-  title: string
-  shortDescription: string
-  content: string
-  blogId: string
-  blogName: string
+    title: string
+    shortDescription: string
+    content: string
+    blogId: string
+    blogName: string
 }
 
 export type PostViewModel = {
-  id: string
-  title: string
-  shortDescription: string
-  content: string
-  blogId: string
-  blogName: string
+    id: string
+    title: string
+    shortDescription: string
+    content: string
+    blogId: string
+    blogName: string
 }
 
 export type PostInputModel = {
-  title: string
-  shortDescription: string
-  content: string
-  blogId: string
+    title: string
+    shortDescription: string
+    content: string
+    blogId: string
 }
