@@ -8,7 +8,9 @@ export let postsCollection: Collection<PostDBModel>
 
 export async function runDb() {
     const mongoUrl = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
+    console.log("mongoUrl", mongoUrl)
     const dbName = process.env.DB_NAME || "test"
+    console.log("dbName", dbName)
 
     const client = new MongoClient(mongoUrl)
     const db = client.db(dbName)
