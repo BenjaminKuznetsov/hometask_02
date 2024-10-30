@@ -3,7 +3,7 @@ import { blogsRouter } from "./features/blog/blogsRouter"
 import { postsRouter } from "./features/posts/postsRouter"
 import { PATHS } from "./lib/paths"
 import { HttpStatusCodes } from "./lib/httpStatusCodes"
-import { db } from "./db/memory"
+import { blogsCollection, postsCollection } from "./db/mongo"
 
 export const app = express()
 
@@ -16,9 +16,9 @@ app.get(PATHS.HOME, (req: Request, res: Response) => {
     res.send(helloPhrase)
 })
 
-app.delete(PATHS.TESTING, (req: Request, res: Response) => {
-    db.blogs = []
-    db.posts = []
+app.delete(PATHS.TESTING, async (req: Request, res: Response) => {
+    await blogsCollection.deleteMany()
+    await postsCollection.deleteMany()
 
     res.sendStatus(HttpStatusCodes.NoContent)
 })
