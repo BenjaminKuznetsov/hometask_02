@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BlogInputModel, BlogViewModel } from "./blogModels"
 import { db } from "../../db/memory"
 

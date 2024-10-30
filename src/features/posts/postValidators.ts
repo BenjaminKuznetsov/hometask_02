@@ -1,5 +1,5 @@
 import { body } from "express-validator"
-import { blogsRepository } from "../blog/blogsRepository_memory"
+import { blogsRepository } from "../blog/blogsRepository_mongo"
 
 const titleValidator = body("title")
     .isString()

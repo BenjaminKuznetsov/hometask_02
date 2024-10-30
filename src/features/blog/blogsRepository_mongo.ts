@@ -9,6 +9,8 @@ const mapper = (blog: WithId<BlogDBModel>): BlogViewModel => {
         name: blog.name,
         description: blog.description,
         websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership,
     }
 }
 
@@ -23,10 +25,15 @@ export const blogsRepository = {
         return foundBlog ? mapper(foundBlog) : null
     },
     createBlog: async (input: BlogInputModel): Promise<BlogViewModel> => {
-        const result = await blogsCollection.insertOne({ ...input })
+        const newBlog: BlogDBModel = {
+            ...input,
+            createdAt: new Date().toISOString(),
+            isMembership: false,
+        }
+        const result = await blogsCollection.insertOne({ ...newBlog })
         return {
             id: result.insertedId.toString(),
-            ...input,
+            ...newBlog,
         }
     },
     updateBlog: async (id: string, input: BlogInputModel): Promise<boolean> => {

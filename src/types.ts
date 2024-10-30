@@ -22,4 +22,3 @@ export type FieldErrorType = {
 export type ApiErrorType = {
     errorsMessages: FieldErrorType[] | null
 }
-4

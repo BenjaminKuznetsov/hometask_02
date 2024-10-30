@@ -2,6 +2,8 @@ export type BlogDBModel = {
     name: string
     description: string
     websiteUrl: string
+    createdAt: string
+    isMembership: boolean
 }
 
 export type BlogViewModel = {
@@ -9,6 +11,8 @@ export type BlogViewModel = {
     name: string
     description: string
     websiteUrl: string
+    createdAt: string
+    isMembership: boolean
 }
 
 export type BlogInputModel = {

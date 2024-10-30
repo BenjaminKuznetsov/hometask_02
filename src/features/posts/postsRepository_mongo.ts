@@ -1,5 +1,5 @@
 import { BlogDBModel } from "../blog/blogModels"
-import { blogsRepository } from "../blog/blogsRepository_memory"
+import { blogsRepository } from "../blog/blogsRepository_mongo"
 import { PostDBModel, PostInputModel, PostViewModel } from "./postModels"
 import { postsCollection } from "../../db/mongo"
 import { ObjectId, WithId } from "mongodb"
@@ -13,6 +13,7 @@ const mapper = (post: WithId<PostDBModel>): PostViewModel => {
         content: post.content,
         blogId: post.blogId,
         blogName: post.blogName,
+        createdAt: post.createdAt,
     }
 }
 
@@ -35,8 +36,9 @@ export const postsRepository = {
             content: input.content,
             blogId: input.blogId,
             blogName: blog.name,
+            createdAt: new Date().toISOString(),
         }
-        const result = await postsCollection.insertOne(newPost)
+        const result = await postsCollection.insertOne({ ...newPost })
         return {
             id: result.insertedId.toString(),
             ...newPost,
@@ -46,7 +48,7 @@ export const postsRepository = {
         // TODO: move searching blog to service
         const blog = await blogsRepository.getBlogById(input_post.blogId) as BlogDBModel
         const _id = new ObjectId(id)
-        const result = await postsCollection.updateOne({ _id }, { ...input_post, blogName: blog.name })
+        const result = await postsCollection.updateOne({ _id }, { $set: { ...input_post, blogName: blog.name } })
         return !!result.matchedCount
     },
     deletePost: async (id: string): Promise<boolean> => {

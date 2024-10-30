@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { BlogDBModel } from "../blog/blogModels"
-import { blogsRepository } from "../blog/blogsRepository_memory"
+import { blogsRepository } from "../blog/old.blogsRepository_memory"
 import { PostInputModel, PostViewModel } from "./postModels"
 import { db } from "../../db/memory"
 

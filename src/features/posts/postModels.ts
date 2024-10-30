@@ -4,6 +4,7 @@ export type PostDBModel = {
     content: string
     blogId: string
     blogName: string
+    createdAt: string
 }
 
 export type PostViewModel = {
@@ -13,6 +14,7 @@ export type PostViewModel = {
     content: string
     blogId: string
     blogName: string
+    createdAt: string
 }
 
 export type PostInputModel = {

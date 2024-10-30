@@ -1,1 +1,1 @@
-*.test.ts
+__tests__
